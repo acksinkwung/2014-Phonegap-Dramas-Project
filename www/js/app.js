@@ -3,8 +3,7 @@ angulargap.controller("HomeController", function ($scope,$http) {
     $scope.message = "AngularJS!";
     $scope.host = "";
     $scope.url = 'http://' + $scope.host + '/READ/HOT';
-    $scope.mp4 = "http://r5---sn-3cu-3iie.googlevideo.com/videoplayback?ratebypass=yes&ipbits=0&key=yt5&ip=119.14.91.184&fexp=909717%2C924616%2C932295%2C936912%2C936910%2C923305%2C936913%2C907231%2C907240%2C921090&source=youtube&ms=au&id=o-ANy0sYxURKGYL6E5gDsoHp_ohkmEj2q0N-1bqIGQ0Q9Y&upn=JkknezuGAUU&sparams=id%2Cip%2Cipbits%2Citag%2Cratebypass%2Csource%2Cupn%2Cexpire&mt=1387662242&mv=m&sver=3&expire=1387685344&itag=22&signature=AE768B3FDCE16729B039AFDF74B87EDFE7BFC1E7.23E752D1BAE8420FF9D35DDAA5E1C31CF7E81538&title=Immersive+Geospatial+Visualization+and+Storytelling+with+Power+Map+for+Excel"
-
+    
  	showData($scope,$scope.url);
  	function showData($scope,url) {
 		setTimeout(function(){
