@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html ng-app="angulargap">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.0.min.css" />
+        <link rel="stylesheet" href="css/pace-theme-flash.css" />
+        <script src="lib/jquery/jquery-1.10.2.min.js"></script>
+        <script src="lib/jquery/jquery.mobile-1.4.0.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="js/SpeechRecognizer.js"></script>
+        <script type="text/javascript" charset="utf-8" src="js/pace.js"></script>
+        <title>Hello World</title>
+    </head>
+    <script type="text/javascript" src="phonegap.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="lib/angular/angular.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
+        <script type="text/javascript">
+            app.initialize();
+        </script>
+    <body ng-controller="HomeController">
+        <script type="text/javascript">
+
+
+            function recognizeSpeech() {
+                var maxMatches = 5;
+                var promptString = "Speak now"; // optional
+                var language = "zh-TW";                     // optional
+                window.plugins.speechrecognizer.startRecognize(function(result){
+                    alert(result);
+                }, function(errorMessage){
+                    console.log("Error message: " + errorMessage);
+                }, maxMatches, promptString, language);
+            }
+
+        </script>
+
+        <div data-role="page" id="page1" >
+        <div data-role="header" data-position="fixed">
+        <input type="search" name="password" id="search" ng-model="search" value="" placeholder="請輸入關鍵字...">
+        </div><!-- /header -->
+
+        <div class="ui-content" role="main" >
+                <div  ng-repeat="drama in dramas | filter:search" >
+                    <div class="ui-input-btn ui-btn ui-btn-a" >
+                        <a href="#page2" ng-click="select(drama.id)">
+                            <img src="{{drama.poster_url}}" width="100%" class="ui-li-thumb" >
+                        </a>  
+                        <h3>{{drama.name}}</h3>
+                        <p>{{drama.actors}}</p>
+                    </div>                
+                </div>
+        </div><!-- /content -->
+
+        <div data-role="footer" data-position="fixed">
+            <div data-role="navbar">
+            <ul>
+                <li><a href="#panel-overlay" data-icon="grid">選單~</a></li>
+                <li><a href="#" ng-click="hot()" data-icon="star" class="ui-btn-active ui-state-persist">熱門!</a></li>
+                <li><a href="#" onclick="recognizeSpeech();" data-icon="search">說吧!</a></li>
+                
+            </ul>
+            </div>
+        </div>
+        <div data-role="panel" id="panel-overlay" data-display="overlay">
+            <ul data-role="listview">
+                <li data-icon="delete"><a href="#" data-rel="close"><center><h1>選單</h1></center></a></li>
+                <li data-icon="bullets"><a href="#" ng-click="tw()" data-rel="close">台灣</a></li>
+                <li data-icon="bullets"><a href="#" ng-click="ch()" data-rel="close">大陸</a></li>
+                <li data-icon="bullets"><a href="#" ng-click="kr()" data-rel="close">韓國</a></li>
+                <li data-icon="bullets"><a href="#" ng-click="jp()" data-rel="close">日本</a></li>
+                <li data-icon="heart"><a href="#" data-rel="close">最愛</a></li>
+                <li data-icon="gear"><a href="#" data-rel="close">設定</a></li>
+                <li data-icon="info"><a href="#" data-rel="close">關於</a></li>
+            </ul>
+        </div>
+        </div>
+
+        <div data-role="page" id="page2">
+        <div data-role="header" data-position="fixed">   
+            <h1>{{selectDrama.name}}</h1>
+            <a href="#page1" class="ui-btn ui-corner-all ui-shadow ui-icon-back ui-btn-icon-left ui-btn-icon-notext"></a>
+            <img src="{{selectDrama.poster_url}}" width="100%" height="200px"></img>
+            
+        </div><!-- /header -->
+
+        <div class="ui-content" role="main">
+            <div data-role="tabs" id="tabs" width="100%">
+              <div data-role="navbar">
+                <ul>
+                  <li><a href="#one" class="ui-btn-active" data-ajax="false">集數</a></li>
+                  <li><a href="#two" data-ajax="false">簡介</a></li>
+                </ul>
+              </div>
+              <div id="one" class="ui-body-d ui-content">
+                <div ng-repeat="eps in selectDrama.eps_num_str">
+                    <div class="ui-input-btn ui-btn ui-btn-a">
+                        {{eps}}
+                        <a  href="#page3" ng-click="view(selectDrama.id,eps)">
+                        <input type="button" data-enhanced="true" value="{{eps}}">
+                        </a>
+                    </div>
+                </div>
+              </div>
+              <div id="two">
+                <p>{{selectDrama.introduction}}</p>
+              </div>
+            </div>
+        </div><!-- /content -->
+
+        <div data-role="footer" data-position="fixed">
+        </div>
+        
+        </div>      
+
+        <div data-role="page" id="page3">
+        <div data-role="header" data-position="fixed">   
+            <h1>{{selectDrama.name}}</h1>
+            <a href="#page2" class="ui-btn ui-corner-all ui-shadow ui-icon-back ui-btn-icon-left ui-btn-icon-notext"></a>
+            
+        </div><!-- /header -->
+
+        <div class="ui-content" role="main">
+            <div ng-repeat="video in selectDramaNum">
+                <div class="ui-input-btn ui-btn ui-btn-a">
+                    Part {{$index+1}}
+                    <a  href="{{video.link}}" target="_blank" ng-click="play(selectDrama.id,eps)">
+                    <input type="button" data-enhanced="true" value="{{eps}}">
+                    </a>
+                </div>
+            </div>
+        </div><!-- /content -->
+
+        <div data-role="footer" data-position="fixed">
+        </div>
+        
+        </div>       
+        
+        <div data-role="page" id="page4">
+        <div data-role="header" data-position="fixed">   
+            <a href="#page3" class="ui-btn ui-corner-all ui-shadow ui-icon-back ui-btn-icon-left ui-btn-icon-notext"></a>
+            <video id="myvideo" loop></video>
+        </div><!-- /header -->
+
+        <div class="ui-content" role="main">
+        </div><!-- /content -->
+
+        <div data-role="footer" data-position="fixed">
+        </div>
+        
+        </div> 
+
+    </body>
+</html>
